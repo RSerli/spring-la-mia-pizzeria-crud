@@ -6,13 +6,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.pizzeriawebapp.spring_la_mia_pizzeria_crud.model.Pizza;
 import it.pizzeriawebapp.spring_la_mia_pizzeria_crud.repository.PizzeriaRepository;
+import jakarta.validation.Valid;
+
 
 @Controller
 @RequestMapping("/")
@@ -51,4 +56,25 @@ public class PizzeriaController {
         }
         return "showDetail";
     }
+
+    @GetMapping("/PizzeriaSpring/NewPizza")
+    public String AddPizza(Model model) {
+
+        model.addAttribute("newPizza", new Pizza());
+
+        return "addNewPizzaForm";
+    }
+    
+    @PostMapping("/PizzeriaSpring/NewPizza")
+    public String save(@Valid @ModelAttribute("newPizza") Pizza userInput, BindingResult bindingResult) {
+        
+        if(bindingResult.hasErrors()){
+            return "/PizzeriaSpring/NewPizza";
+        }
+
+        repository.save(userInput);
+        
+        return "redirect:/PizzeriaSpring/index";
+    }
+    
 }

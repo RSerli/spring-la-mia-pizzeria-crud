@@ -19,6 +19,10 @@
                         <a class="nav-link" th:href="@{/PizzeriaSpring/index}"
                             th:classAppend="${current == 'ListaPizze'} ? active : not-active">Lista</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/PizzeriaSpring/NewPizza}"
+                            th:classAppend="${current == 'Create'} ? active : not-active">Crea</a>
+                    </li>
                 </ul>
             </div>
         </div>
