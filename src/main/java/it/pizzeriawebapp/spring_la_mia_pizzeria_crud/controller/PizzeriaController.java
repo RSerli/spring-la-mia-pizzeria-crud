@@ -96,7 +96,16 @@ public class PizzeriaController {
     }
 
     @PostMapping("/PizzeriaSpring/ModificaPizza/{id}")
-    public String saveMod(@Valid @ModelAttribute("modPizza") Pizza userInput, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String saveMod(@Valid @ModelAttribute("modPizza") Pizza userInput, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+
+        // Controllo in BackEnd che il nome della pizza non venga modificato
+        Pizza oldPizzaData = repository.findById(userInput.getId()).get();
+        if(!oldPizzaData.getNome().equals(userInput.getNome())){
+            bindingResult.addError(new ObjectError("errorModifiedName", "Non si può modificare il nome!"));
+            model.addAttribute("warningAlertMessage", "Non si può modificare il nome!");
+            // ritorniamo a mettere il vecchio nome
+            userInput.setNome(oldPizzaData.getNome());
+        }
 
         if(bindingResult.hasErrors()){
             return "modNewPizzaForm";
