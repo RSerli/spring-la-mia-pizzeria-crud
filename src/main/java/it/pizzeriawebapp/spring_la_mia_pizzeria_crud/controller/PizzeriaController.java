@@ -86,5 +86,25 @@ public class PizzeriaController {
         redirectAttributes.addFlashAttribute("successAlertMessage", "Nuova pizza inerita correttamente!");
         return "redirect:/PizzeriaSpring/index";
     }
+
+    @GetMapping("/PizzeriaSpring/ModificaPizza/{id}")
+    public String ModPizza(@PathVariable("id") Integer id, Model model) {
+
+        model.addAttribute("modPizza", repository.findById(id).get());
+
+        return "modNewPizzaForm";
+    }
+
+    @PostMapping("/PizzeriaSpring/ModificaPizza/{id}")
+    public String saveMod(@Valid @ModelAttribute("modPizza") Pizza userInput, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if(bindingResult.hasErrors()){
+            return "modNewPizzaForm";
+        }
+
+        repository.save(userInput);
+        redirectAttributes.addFlashAttribute("successAlertMessage", "Pizza modificata in modo corretto!");
+        return "redirect:/PizzeriaSpring/index";
+    }
     
 }
