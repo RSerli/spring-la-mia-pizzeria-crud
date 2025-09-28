@@ -115,5 +115,13 @@ public class PizzeriaController {
         redirectAttributes.addFlashAttribute("successAlertMessage", "Pizza modificata in modo corretto!");
         return "redirect:/PizzeriaSpring/index";
     }
+
+    @PostMapping("/deletePizza/{id}")
+    public String deletePizza(@PathVariable("id") Integer id){
+
+        repository.deleteById(id);
+
+        return "redirect:/PizzeriaSpring/index";
+    }
     
 }
